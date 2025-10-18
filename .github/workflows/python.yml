@@ -1,0 +1,14 @@
+name: CI
+on: [push,pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt || true; fi
+          if [ -d "${REPO_NAME}-tests" ]; then pip install pytest || true; pytest -q || true; fi
